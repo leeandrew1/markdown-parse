@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+//
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
@@ -13,12 +14,15 @@ public class MarkdownParse {
         int currentIndex = 0;
         while (currentIndex < markdown.length()) {
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
+            System.out.println(currentIndex);
+            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);// the second argument is for where to start
+                                                                          // research, if not provided, search start
+                                                                          // from index 0
             int openParen = markdown.indexOf("(", nextCloseBracket);
             int closeParen = markdown.indexOf(")", openParen);
-
-            if (nextCloseBracket == openParen - 1 && (nextCloseBracket == 0
-                    || markdown.charAt(nextOpenBracket - 1) != '!')) {
+            // toReturn.add(markdown.substring(openParen + 1, closeParen));
+            if (nextCloseBracket == openParen - 1
+                    && (nextOpenBracket == 0 || markdown.charAt(nextOpenBracket - 1) != '!')) {
                 toReturn.add(markdown.substring(openParen + 1, closeParen));
             }
             currentIndex = closeParen + 1;
@@ -27,7 +31,6 @@ public class MarkdownParse {
         return toReturn;
     }
 
-    // Testing commit
     public static void main(String[] args) throws IOException {
         Path fileName = Path.of(args[0]);
         String contents = Files.readString(fileName);
