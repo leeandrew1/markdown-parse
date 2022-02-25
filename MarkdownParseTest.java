@@ -1,12 +1,36 @@
-
 import static org.junit.Assert.*;
 import org.junit.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;;
 
 public class MarkdownParseTest {
     @Test
-    public void addition() {
-        assertEquals(2, 1 + 1);
+    public void snippetOneTest() throws IOException {
+        Path fileName = Path.of("snippet1.md");
+        String contents = Files.readString(fileName);
+        List<String> expectedResult = List.of("google.com", "google.com", "ucsd.edu");
+        assertEquals(expectedResult, MarkdownParse.getLinks(contents));
     }
+
+    @Test
+    public void snippetTwoTest() throws IOException {
+        Path fileName = Path.of("snippet2.md");
+        String contents = Files.readString(fileName);
+        List<String> expectedResult = List.of("a.com", "a.com(())", "example.com");
+        assertEquals(expectedResult, MarkdownParse.getLinks(contents));
+    }
+
+    @Test
+    public void snippetThreeTest() throws IOException {
+        Path fileName = Path.of("snippet3.md");
+        String contents = Files.readString(fileName);
+        List<String> expectedResult = List.of("https://www.twitter.com",
+                "https://ucsd-cse15l-w22.github.io/", "https://cse.ucsd.edu/");
+        assertEquals(expectedResult, MarkdownParse.getLinks(contents));
+    }
+
 }
 // import static org.junit.Assert.*;
 // import org.junit.*;
